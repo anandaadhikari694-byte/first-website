@@ -9,14 +9,50 @@
       --bg: #f4efe7;
       --surface: #fffaf3;
       --surface-strong: #ffffff;
+      --bg-start: #f8f3ea;
+      --bg-end: #f0e6d8;
+      --glow: rgba(244, 155, 54, 0.18);
       --primary: #0f6d62;
       --primary-dark: #0a4e46;
       --accent: #f49b36;
       --text: #1d2a2f;
       --muted: #5d6b70;
       --line: #ddd1bf;
+      --panel-bg: rgba(255, 250, 243, 0.92);
+      --panel-border: rgba(221, 209, 191, 0.9);
+      --input-bg: #fffdfa;
+      --secondary-bg: rgba(15, 109, 98, 0.08);
+      --badge-bg: rgba(244, 155, 54, 0.18);
+      --badge-text: #97550d;
+      --spotlight-top: rgba(15, 109, 98, 0.08);
+      --spotlight-bottom: rgba(244, 155, 54, 0.08);
       --shadow: 0 18px 45px rgba(19, 45, 50, 0.12);
       --radius: 24px;
+    }
+
+    body.dark-mode {
+      --bg: #0c1518;
+      --surface: #111d21;
+      --surface-strong: #17262c;
+      --bg-start: #122027;
+      --bg-end: #091115;
+      --glow: rgba(78, 173, 154, 0.16);
+      --primary: #4ed5c0;
+      --primary-dark: #bdf3ea;
+      --accent: #ffb454;
+      --text: #edf4f5;
+      --muted: #a3b5b8;
+      --line: #294046;
+      --panel-bg: rgba(17, 29, 33, 0.92);
+      --panel-border: rgba(41, 64, 70, 0.92);
+      --input-bg: #0f1a1f;
+      --secondary-bg: rgba(78, 213, 192, 0.12);
+      --badge-bg: rgba(255, 180, 84, 0.18);
+      --badge-text: #ffd79b;
+      --spotlight-top: rgba(78, 213, 192, 0.11);
+      --spotlight-bottom: rgba(255, 180, 84, 0.09);
+      --shadow: 0 18px 45px rgba(0, 0, 0, 0.35);
+      color-scheme: dark;
     }
 
     * {
@@ -28,8 +64,9 @@
       font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
       color: var(--text);
       background:
-        radial-gradient(circle at top right, rgba(244, 155, 54, 0.18), transparent 30%),
-        linear-gradient(180deg, #f8f3ea 0%, #f0e6d8 100%);
+        radial-gradient(circle at top right, var(--glow), transparent 30%),
+        linear-gradient(180deg, var(--bg-start) 0%, var(--bg-end) 100%);
+      transition: background 0.35s ease, color 0.35s ease;
     }
 
     a {
@@ -47,11 +84,12 @@
     .hero,
     .panel,
     .footer {
-      background: rgba(255, 250, 243, 0.92);
+      background: var(--panel-bg);
       backdrop-filter: blur(10px);
-      border: 1px solid rgba(221, 209, 191, 0.9);
+      border: 1px solid var(--panel-border);
       border-radius: var(--radius);
       box-shadow: var(--shadow);
+      transition: background 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease;
     }
 
     .nav {
@@ -89,6 +127,12 @@
       font-size: 0.95rem;
     }
 
+    .nav-controls {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
     .hero {
       display: grid;
       grid-template-columns: 1.3fr 1fr;
@@ -124,6 +168,7 @@
       font-size: 0.95rem;
       font-weight: 600;
       cursor: pointer;
+      transition: background 0.3s ease, color 0.3s ease, border-color 0.3s ease;
     }
 
     .btn-primary {
@@ -132,8 +177,15 @@
     }
 
     .btn-secondary {
-      background: rgba(15, 109, 98, 0.08);
+      background: var(--secondary-bg);
       color: var(--primary-dark);
+    }
+
+    .theme-toggle {
+      padding: 11px 16px;
+      border: 1px solid var(--line);
+      background: var(--surface-strong);
+      color: var(--text);
     }
 
     .hero-card {
@@ -152,7 +204,7 @@
 
     .spotlight {
       background:
-        linear-gradient(180deg, rgba(15, 109, 98, 0.08), rgba(244, 155, 54, 0.08)),
+        linear-gradient(180deg, var(--spotlight-top), var(--spotlight-bottom)),
         var(--surface-strong);
     }
 
@@ -219,6 +271,7 @@
       border-radius: 20px;
       background: var(--surface-strong);
       padding: 18px;
+      transition: background 0.35s ease, border-color 0.35s ease;
     }
 
     .team-card h3,
@@ -230,8 +283,8 @@
       display: inline-block;
       padding: 6px 10px;
       border-radius: 999px;
-      background: rgba(244, 155, 54, 0.18);
-      color: #97550d;
+      background: var(--badge-bg);
+      color: var(--badge-text);
       font-size: 0.8rem;
       font-weight: 700;
     }
@@ -280,9 +333,10 @@
       padding: 12px 14px;
       border-radius: 14px;
       border: 1px solid var(--line);
-      background: #fffdfa;
+      background: var(--input-bg);
       font: inherit;
       color: var(--text);
+      transition: background 0.35s ease, border-color 0.35s ease, color 0.35s ease;
     }
 
     textarea {
@@ -347,6 +401,12 @@
         flex-direction: column;
         align-items: flex-start;
       }
+
+      .nav-controls {
+        width: 100%;
+        flex-direction: column;
+        align-items: flex-start;
+      }
     }
 
     @media (max-width: 560px) {
@@ -373,11 +433,16 @@
         <div class="brand-mark">S</div>
         <div>SportHub Management</div>
       </div>
-      <nav class="nav-links">
-        <a href="#teams">Teams</a>
-        <a href="#matches">Matches</a>
-        <a href="#register">Register</a>
-      </nav>
+      <div class="nav-controls">
+        <nav class="nav-links">
+          <a href="#teams">Teams</a>
+          <a href="#matches">Matches</a>
+          <a href="#register">Register</a>
+        </nav>
+        <button class="btn theme-toggle" id="themeToggle" type="button" aria-label="Switch color theme">
+          Dark Mode
+        </button>
+      </div>
     </header>
 
     <section class="hero fade-up delay-1">
@@ -420,7 +485,7 @@
           </p>
         </div>
         <div class="spotlight">
-          <small>Today’s Focus</small>
+          <small>Today's Focus</small>
           <h3>Training Coordination</h3>
           <p>
             Track attendance, assign coaching slots, and keep players informed with one shared schedule.
@@ -494,7 +559,7 @@
       <div class="panel-header">
         <div>
           <div class="section-label">Upcoming Matches</div>
-          <h2>This week’s schedule</h2>
+          <h2>This week's schedule</h2>
         </div>
         <span class="badge">Live planning board</span>
       </div>
@@ -528,5 +593,31 @@
       <span>Built as a simple HTML sports management website sample.</span>
     </footer>
   </div>
+  <script>
+    const themeToggle = document.getElementById("themeToggle");
+    const storedTheme = localStorage.getItem("sporthub-theme");
+    const systemPrefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+
+    if (storedTheme === "dark" || (!storedTheme && systemPrefersDark)) {
+      document.body.classList.add("dark-mode");
+    }
+
+    function syncThemeLabel() {
+      const isDark = document.body.classList.contains("dark-mode");
+      themeToggle.textContent = isDark ? "Light Mode" : "Dark Mode";
+      themeToggle.setAttribute("aria-pressed", String(isDark));
+    }
+
+    themeToggle.addEventListener("click", function () {
+      document.body.classList.toggle("dark-mode");
+      localStorage.setItem(
+        "sporthub-theme",
+        document.body.classList.contains("dark-mode") ? "dark" : "light"
+      );
+      syncThemeLabel();
+    });
+
+    syncThemeLabel();
+  </script>
 </body>
 </html>
