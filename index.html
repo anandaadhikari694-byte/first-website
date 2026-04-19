@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SportHub Management</title>
+  <style>
+    :root {
+      --bg: #f4efe7;
+      --surface: #fffaf3;
+      --surface-strong: #ffffff;
+      --primary: #0f6d62;
+      --primary-dark: #0a4e46;
+      --accent: #f49b36;
+      --text: #1d2a2f;
+      --muted: #5d6b70;
+      --line: #ddd1bf;
+      --shadow: 0 18px 45px rgba(19, 45, 50, 0.12);
+      --radius: 24px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top right, rgba(244, 155, 54, 0.18), transparent 30%),
+        linear-gradient(180deg, #f8f3ea 0%, #f0e6d8 100%);
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .page {
+      width: min(1120px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 24px 0 48px;
+    }
+
+    .nav,
+    .hero,
+    .panel,
+    .footer {
+      background: rgba(255, 250, 243, 0.92);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(221, 209, 191, 0.9);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      padding: 18px 24px;
+      margin-bottom: 24px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+    }
+
+    .brand-mark {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      color: white;
+      font-size: 1.2rem;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 18px;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.3fr 1fr;
+      gap: 24px;
+      padding: 34px;
+      margin-bottom: 24px;
+      overflow: hidden;
+    }
+
+    .hero h1 {
+      margin: 0 0 14px;
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      line-height: 1.05;
+    }
+
+    .hero p {
+      margin: 0 0 24px;
+      color: var(--muted);
+      font-size: 1rem;
+      max-width: 58ch;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .btn {
+      border: none;
+      border-radius: 999px;
+      padding: 13px 20px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-secondary {
+      background: rgba(15, 109, 98, 0.08);
+      color: var(--primary-dark);
+    }
+
+    .hero-card {
+      display: grid;
+      gap: 16px;
+      align-content: start;
+    }
+
+    .spotlight,
+    .mini-stat {
+      background: var(--surface-strong);
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      padding: 20px;
+    }
+
+    .spotlight {
+      background:
+        linear-gradient(180deg, rgba(15, 109, 98, 0.08), rgba(244, 155, 54, 0.08)),
+        var(--surface-strong);
+    }
+
+    .spotlight small,
+    .section-label {
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--primary);
+      font-weight: 700;
+      font-size: 0.75rem;
+    }
+
+    .spotlight h3,
+    .panel h2 {
+      margin: 10px 0 8px;
+      font-size: 1.3rem;
+    }
+
+    .spotlight p,
+    .mini-stat p,
+    .match p,
+    .team-card p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .stats-grid,
+    .content-grid,
+    .team-grid,
+    .match-grid {
+      display: grid;
+      gap: 18px;
+    }
+
+    .stats-grid {
+      grid-template-columns: repeat(3, 1fr);
+      margin-top: 20px;
+    }
+
+    .content-grid {
+      grid-template-columns: 1.1fr 0.9fr;
+    }
+
+    .panel {
+      padding: 28px;
+    }
+
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    .team-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .team-card,
+    .match,
+    .form-card {
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: var(--surface-strong);
+      padding: 18px;
+    }
+
+    .team-card h3,
+    .match h3 {
+      margin: 10px 0 8px;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(244, 155, 54, 0.18);
+      color: #97550d;
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+
+    .match-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .match {
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      align-items: center;
+    }
+
+    .match strong {
+      display: block;
+      margin-bottom: 4px;
+      font-size: 1.05rem;
+    }
+
+    .match-time {
+      min-width: 110px;
+      text-align: right;
+      color: var(--primary-dark);
+      font-weight: 700;
+    }
+
+    form {
+      display: grid;
+      gap: 14px;
+      margin-top: 18px;
+    }
+
+    label {
+      display: grid;
+      gap: 8px;
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: #fffdfa;
+      font: inherit;
+      color: var(--text);
+    }
+
+    textarea {
+      min-height: 110px;
+      resize: vertical;
+    }
+
+    .footer {
+      margin-top: 24px;
+      padding: 18px 24px;
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+      color: var(--muted);
+      font-size: 0.92rem;
+    }
+
+    .fade-up {
+      opacity: 0;
+      transform: translateY(18px);
+      animation: fadeUp 0.7s ease forwards;
+    }
+
+    .fade-up.delay-1 {
+      animation-delay: 0.12s;
+    }
+
+    .fade-up.delay-2 {
+      animation-delay: 0.24s;
+    }
+
+    .fade-up.delay-3 {
+      animation-delay: 0.36s;
+    }
+
+    @keyframes fadeUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @media (max-width: 900px) {
+      .hero,
+      .content-grid,
+      .team-grid,
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .match {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .match-time {
+        text-align: left;
+      }
+
+      .nav {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .page {
+        width: min(100% - 20px, 1120px);
+      }
+
+      .hero,
+      .panel {
+        padding: 22px;
+      }
+
+      .nav,
+      .footer {
+        padding: 16px 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="nav fade-up">
+      <div class="brand">
+        <div class="brand-mark">S</div>
+        <div>SportHub Management</div>
+      </div>
+      <nav class="nav-links">
+        <a href="#teams">Teams</a>
+        <a href="#matches">Matches</a>
+        <a href="#register">Register</a>
+      </nav>
+    </header>
+
+    <section class="hero fade-up delay-1">
+      <div>
+        <div class="section-label">Sports Management Website</div>
+        <h1>Manage teams, players, and match schedules in one simple place.</h1>
+        <p>
+          SportHub helps clubs and academies track active teams, organize fixtures, and collect player registrations
+          with a clean and easy-to-use dashboard.
+        </p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#register">Register a Player</a>
+          <a class="btn btn-secondary" href="#matches">View Schedule</a>
+        </div>
+        <div class="stats-grid">
+          <div class="mini-stat">
+            <small>Active Teams</small>
+            <h3>12</h3>
+            <p>Across football, basketball, and cricket programs.</p>
+          </div>
+          <div class="mini-stat">
+            <small>Players</small>
+            <h3>248</h3>
+            <p>Registered athletes with updated profiles.</p>
+          </div>
+          <div class="mini-stat">
+            <small>Upcoming Games</small>
+            <h3>9</h3>
+            <p>Matches and practice events scheduled this week.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-card">
+        <div class="spotlight">
+          <small>Featured Update</small>
+          <h3>Summer League Registration Is Open</h3>
+          <p>
+            Coaches can now submit team rosters and new player requests for the upcoming city tournament season.
+          </p>
+        </div>
+        <div class="spotlight">
+          <small>Today’s Focus</small>
+          <h3>Training Coordination</h3>
+          <p>
+            Track attendance, assign coaching slots, and keep players informed with one shared schedule.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <div class="content-grid">
+      <section class="panel fade-up delay-2" id="teams">
+        <div class="panel-header">
+          <div>
+            <div class="section-label">Club Teams</div>
+            <h2>Current squads</h2>
+          </div>
+          <span class="badge">Updated weekly</span>
+        </div>
+        <div class="team-grid">
+          <article class="team-card">
+            <span class="badge">Football</span>
+            <h3>Tigers FC</h3>
+            <p>18 players, 2 coaches, next match on Tuesday.</p>
+          </article>
+          <article class="team-card">
+            <span class="badge">Basketball</span>
+            <h3>City Hoopers</h3>
+            <p>14 players, 1 coach, training every Wednesday.</p>
+          </article>
+          <article class="team-card">
+            <span class="badge">Cricket</span>
+            <h3>Royal Strikers</h3>
+            <p>16 players, 2 coaches, tournament-ready squad.</p>
+          </article>
+        </div>
+      </section>
+
+      <aside class="panel fade-up delay-3" id="register">
+        <div class="section-label">Quick Registration</div>
+        <h2>Add a player request</h2>
+        <p style="color: var(--muted); margin: 0;">
+          This sample form is ideal for a basic sports management website homepage.
+        </p>
+        <form>
+          <label>
+            Player Name
+            <input type="text" placeholder="Enter player name">
+          </label>
+          <label>
+            Sport
+            <select>
+              <option>Football</option>
+              <option>Basketball</option>
+              <option>Cricket</option>
+              <option>Volleyball</option>
+            </select>
+          </label>
+          <label>
+            Age Group
+            <input type="text" placeholder="e.g. Under 16">
+          </label>
+          <label>
+            Notes
+            <textarea placeholder="Add any training notes or contact details"></textarea>
+          </label>
+          <button class="btn btn-primary" type="button">Submit Request</button>
+        </form>
+      </aside>
+    </div>
+
+    <section class="panel fade-up delay-3" id="matches" style="margin-top: 24px;">
+      <div class="panel-header">
+        <div>
+          <div class="section-label">Upcoming Matches</div>
+          <h2>This week’s schedule</h2>
+        </div>
+        <span class="badge">Live planning board</span>
+      </div>
+      <div class="match-grid">
+        <article class="match">
+          <div>
+            <strong>Tigers FC vs Falcon United</strong>
+            <p>Main Stadium, League Round 3</p>
+          </div>
+          <div class="match-time">Mon 6:00 PM</div>
+        </article>
+        <article class="match">
+          <div>
+            <strong>City Hoopers vs North Blazers</strong>
+            <p>Indoor Arena, Practice Match</p>
+          </div>
+          <div class="match-time">Wed 4:30 PM</div>
+        </article>
+        <article class="match">
+          <div>
+            <strong>Royal Strikers vs Green Hawks</strong>
+            <p>Community Ground, Weekend Cup</p>
+          </div>
+          <div class="match-time">Sat 10:00 AM</div>
+        </article>
+      </div>
+    </section>
+
+    <footer class="footer fade-up delay-3">
+      <span>SportHub Management</span>
+      <span>Built as a simple HTML sports management website sample.</span>
+    </footer>
+  </div>
+</body>
+</html>
